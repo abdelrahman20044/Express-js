@@ -7,12 +7,21 @@ const fs = require('fs');
     .json({ message: 'Hello from the server side', app: 'Natours' });
 });*/
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log('hello');
+  next();
+});
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 const GetAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestAT: req.requestTime,
     result: tours.length,
     data: {
       tours,
@@ -93,4 +102,3 @@ const port = 3000;
 app.listen(port, () => {
   console.log('start getting requests');
 });
-console.log('mansy');
