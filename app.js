@@ -1,11 +1,9 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-/*app.get('/', (req, res) => {
-  res
-    .status(200)
-    .json({ message: 'Hello from the server side', app: 'Natours' });
-});*/
+const morgan = require('morgan');
+//1) middlewares
+app.use(morgan('dev'));
 app.use(express.json());
 app.use((req, res, next) => {
   console.log('hello');
@@ -18,6 +16,8 @@ app.use((req, res, next) => {
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
+
+//2) route handlers
 const GetAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -87,6 +87,7 @@ const CreateNewTour = (req, res) => {
     }
   );
 };
+//3) routes
 // app.get('/api/v1/tours', GetAllTours);
 // app.get('/api/v1/tours/:id', GetTour);
 // app.patch('/api/v1/tours/:id', UpdateData);
@@ -98,6 +99,7 @@ app
   .get(GetTour)
   .patch(UpdateData)
   .delete(DeleteTour);
+//4)start server
 const port = 3000;
 app.listen(port, () => {
   console.log('start getting requests');
