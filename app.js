@@ -119,21 +119,21 @@ const deleteUser = (req, res) => {
   });
 };
 //3) routes
-// app.get('/api/v1/tours', GetAllTours);
-// app.get('/api/v1/tours/:id', GetTour);
-// app.patch('/api/v1/tours/:id', UpdateData);
-// app.delete('/api/v1/tours/:id', DeleteTour);
-// app.post('/api/v1/tours', CreateNewTour);
-app.route('/api/v1/tours').get(GetAllTours).post(CreateNewTour);
-app
-  .route('/api/v1/tours/:id')
-  .get(GetTour)
-  .patch(UpdateData)
-  .delete(DeleteTour);
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-app.route('/api/v1/user/:id').get(getUser).patch(updateUser).delete(deleteUser);
+const tourRouter = express.Router();
+const userRouter = express.Router();
+tourRouter.route('/').get(GetAllTours).post(CreateNewTour);
+tourRouter.route('/:id').get(GetTour).patch(UpdateData).delete(DeleteTour);
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/user', userRouter);
 //4)start server
 const port = 3000;
 app.listen(port, () => {
   console.log('start getting requests');
 });
+// app.get('/api/v1/tours', GetAllTours);
+// app.get('/api/v1/tours/:id', GetTour);
+// app.patch('/api/v1/tours/:id', UpdateData);
+// app.delete('/api/v1/tours/:id', DeleteTour);
+// app.post('/api/v1/tours', CreateNewTour);
