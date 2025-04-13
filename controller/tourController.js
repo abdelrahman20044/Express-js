@@ -12,6 +12,15 @@ exports.checkId = (req, res, next, val) => {
   }
   next();
 };
+exports.checkBody = (req, res, next) => {
+  if (req.body.name == null || req.body.price == null) {
+    return res.status(404).json({
+      status: 'failed',
+      message: 'name or price not found',
+    });
+  }
+  next();
+};
 exports.GetAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
