@@ -8,11 +8,11 @@ const {
   DeleteTour,
   CreateNewTour,
   checkBody,
-  checkId,
+  //checkId,
   // eslint-disable-next-line import/no-useless-path-segments
 } = require('./../controller/tourController');
 
-router.param('id', checkId);
-router.route('/').get(GetAllTours).post(checkBody, CreateNewTour);
+//router.param('id', checkId);
+router.route('/').get(GetAllTours).post(CreateNewTour);
 router.route('/:id').get(GetTour).patch(UpdateData).delete(DeleteTour);
 module.exports = router;
