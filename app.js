@@ -1,10 +1,11 @@
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
-const morgan = require('morgan');
 //1) middlewares
-if (process.env.NODE_ENV == 'devolopment') {
+if (process.env.NODE_ENV === 'devolopment') {
   app.use(morgan('dev'));
 }
 app.use(express.json());

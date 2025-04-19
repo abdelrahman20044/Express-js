@@ -1,0 +1,9 @@
+{
+  "cSpell.ignorePaths": [
+    "**/node_modules/**",
+    "**/package.json",
+    "**/config.env",
+    "**/.vscode/**"
+  ],
+  "cSpell.words": ["devolopment"]
+}
