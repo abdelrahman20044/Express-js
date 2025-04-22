@@ -1,6 +1,6 @@
 // const fs = require('fs');
 const { options } = require('../app');
-const Tour = require('./../modules/tourModule');
+const Tour = require('../models/tourModel');
 /*const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );*/
@@ -26,7 +26,18 @@ exports.checkBody = (req, res, next) => {
 };
 exports.GetAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find(); // find with no argu return all documents
+    // 1) Build the query
+    const queryobj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryobj[el]);
+    // Create the initial query (without awaiting it yet!)
+    let query = Tour.find(queryobj); // find with no argu return all documents
+    // if (req.query.sort) {
+    //   // query = query.sort(req.query.sort);
+    //   query = query.sort('price');
+    // }
+    // 2) Execute the query
+    const tours = await query;
     res.status(200).json({
       status: 'success',
       result: tours.length,

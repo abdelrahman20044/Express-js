@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'devolopment') {
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
-  console.log('hello');
+  console.log('helloo');
   next();
 });
 app.use((req, res, next) => {
