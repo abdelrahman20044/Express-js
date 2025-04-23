@@ -39,13 +39,21 @@ exports.GetAllTours = async (req, res) => {
     );
     // Create the initial query (without awaiting it yet!)
     let query = Tour.find(JSON.parse(querystring)); // find with no argu return all documents
+    // 2) sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' '); //ex price,duration > ['price', 'duration'] > "price duration"
       query = query.sort(sortBy); // sort by = "price duration"  which mongodb understand
     } else {
       query = query.sort('-createdAT'); // if no sorting sort by new created first
     }
-    // 2) Execute the query
+    // 3) Field limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v'); // this means excluding
+    }
+    // Execute the query
     const tours = await query;
     res.status(200).json({
       status: 'success',
