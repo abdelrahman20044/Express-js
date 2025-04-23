@@ -39,10 +39,12 @@ exports.GetAllTours = async (req, res) => {
     );
     // Create the initial query (without awaiting it yet!)
     let query = Tour.find(JSON.parse(querystring)); // find with no argu return all documents
-    // if (req.query.sort) {
-    //   // query = query.sort(req.query.sort);
-    //   query = query.sort('price');
-    // }
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' '); //ex price,duration > ['price', 'duration'] > "price duration"
+      query = query.sort(sortBy); // sort by = "price duration"  which mongodb understand
+    } else {
+      query = query.sort('-createdAT'); // if no sorting sort by new created first
+    }
     // 2) Execute the query
     const tours = await query;
     res.status(200).json({
