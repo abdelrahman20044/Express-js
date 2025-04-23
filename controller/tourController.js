@@ -1,4 +1,5 @@
 // const fs = require('fs');
+const { json } = require('express');
 const { options } = require('../app');
 const Tour = require('../models/tourModel');
 /*const tours = JSON.parse(
@@ -30,8 +31,14 @@ exports.GetAllTours = async (req, res) => {
     const queryobj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryobj[el]);
+    // Advanced filtering
+    let querystring = JSON.stringify(queryobj);
+    querystring = querystring.replace(
+      /\b(gt|gte|lt|lte)\b/g,
+      (match) => `$${match}`,
+    );
     // Create the initial query (without awaiting it yet!)
-    let query = Tour.find(queryobj); // find with no argu return all documents
+    let query = Tour.find(JSON.parse(querystring)); // find with no argu return all documents
     // if (req.query.sort) {
     //   // query = query.sort(req.query.sort);
     //   query = query.sort('price');
