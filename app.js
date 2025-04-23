@@ -27,8 +27,3 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/user', userRouter);
 //4)start server
 module.exports = app;
-// app.get('/api/v1/tours', GetAllTours);
-// app.get('/api/v1/tours/:id', GetTour);
-// app.patch('/api/v1/tours/:id', UpdateData);
-// app.delete('/api/v1/tours/:id', DeleteTour);
-// app.post('/api/v1/tours', CreateNewTour);

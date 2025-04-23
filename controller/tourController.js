@@ -25,6 +25,13 @@ exports.checkBody = (req, res, next) => {
   }
   next();
 };
+
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+};
 exports.GetAllTours = async (req, res) => {
   try {
     // 1) Build the query
@@ -54,10 +61,11 @@ exports.GetAllTours = async (req, res) => {
       query = query.select('-__v'); // this means excluding
     }
     // 4) paging & limits
-    // const page = (req.query.page * 1) | 1;
-    // const limit = (req.query.limit * 1) | 100;
+
     const page = req.query.page ? req.query.page * 1 : 1;
     const limit = req.query.limit ? req.query.limit * 1 : 100;
+    // const page = (req.query.page * 1) | 1;
+    // const limit = (req.query.limit * 1) | 100;
     const skip = (page - 1) * limit;
     query = query.skip(skip).limit(limit);
     if (req.query.page) {
