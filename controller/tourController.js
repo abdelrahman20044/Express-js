@@ -2,6 +2,7 @@
 const { json } = require('express');
 const { options } = require('../app');
 const Tour = require('../models/tourModel');
+const APIFeatures = require('../utils/ApiFeatures');
 /*const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );*/
@@ -34,7 +35,7 @@ exports.aliasTopTours = (req, res, next) => {
 };
 exports.GetAllTours = async (req, res) => {
   try {
-    // 1) Build the query
+    /* // 1) Build the query
     const queryobj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryobj[el]);
@@ -73,9 +74,14 @@ exports.GetAllTours = async (req, res) => {
       if (skip >= numTours) {
         throw new Error('This page does not exist');
       }
-    }
+    }*/
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
     // Execute the query
-    const tours = await query;
+    const tours = await features.query;
     res.status(200).json({
       status: 'success',
       result: tours.length,
