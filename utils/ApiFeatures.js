@@ -1,8 +1,9 @@
 class ApiFeatures {
   constructor(query, queryString) {
-    this.query = query; // mongo query
+    this.query = query; //tour.find()
     this.queryString = queryString; // req query
   }
+
   filter() {
     // 1) Build the query
     const queryobj = { ...this.queryString };
