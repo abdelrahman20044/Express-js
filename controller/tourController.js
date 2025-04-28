@@ -204,20 +204,3 @@ exports.getMonthlyPlan = async (req, res) => {
     });
   }
 };
-/*exports.CreateNewTour = (req, res) => {
-  // const NewId = tours[tours.length - 1].id + 1;
-  // const NewTour = Object.assign({ id: NewId }, req.body);
-  // tours.push(NewTour);
-  // fs.writeFile(
-  //   `${__dirname}/dev-data/data/tours-simple.json`,
-  //   JSON.stringify(tours),
-  //   (err) => {
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   tour: NewTour,
-    // },
-  });
-  // },
-  // );
-};*/
