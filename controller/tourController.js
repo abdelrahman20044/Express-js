@@ -115,7 +115,7 @@ exports.CreateNewTour = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'failed',
-      message: 'invaild data',
+      message: err,
     });
   }
 };
