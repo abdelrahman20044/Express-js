@@ -1,11 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
+const AppError = require('./utils/appError');
+const globalError = require('./controller/errorController');
 
 const app = express();
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 //1) middlewares
-if (process.env.NODE_ENV === 'devolopment') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 app.use(express.json());
@@ -30,18 +32,12 @@ app.all('*', (req, res, next) => {
   //   status: 'fail',
   //   message: `can't find ${req.originalUrl} on this server`,
   // });
-  const err = new Error(`can't find ${req.originalUrl} on this server`);
-  err.status = 'fail';
-  err.statusCode = 404;
-  next(err);
+  // const err = new Error(`can't find ${req.originalUrl} on this server`);
+  // err.status = 'fail';
+  // err.statusCode = 404;
+  next(new AppError(`can't find ${req.originalUrl} on this server`, 404));
 });
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(globalError);
 //4)start server
 module.exports = app;
+
