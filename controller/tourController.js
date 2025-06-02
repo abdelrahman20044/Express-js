@@ -4,6 +4,7 @@ const { options } = require('../app');
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/ApiFeatures');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 /*const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );*/
@@ -50,8 +51,12 @@ exports.GetAllTours = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 exports.GetTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id); // find with document with id
+  if (!tour) {
+    return next(new AppError('No tour found with this ID', 404));
+  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -59,20 +64,26 @@ exports.GetTour = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.UpdateData = async (req, res, next) => {
+exports.UpdateData = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
     new: true, // to return the new modified document
     runValidators: true, //ensures that the update object is validated according to your schema rules.
   });
+  if (!tour) {
+    return next(new AppError('No tour found with this ID', 404));
+  }
   res.status(200).json({
     status: 'success',
     data: {
       tour,
     },
   });
-};
+});
 exports.DeleteTour = catchAsync(async (req, res, next) => {
-  await Tour.findByIdAndDelete(req.params.id);
+  const tour = await Tour.findByIdAndDelete(req.params.id);
+  if (!tour) {
+    return next(new AppError('No tour found with this ID', 404));
+  }
   res.status(204).json({
     status: 'success',
     data: null,
