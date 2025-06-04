@@ -5,12 +5,13 @@
   "main": "app.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start:prod": "set NODE_ENV=production && nodemon server.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js"
   },
   "author": "Abdelrahman Elmansy",
   "license": "ISC",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "mongoose": "^5.13.23",
